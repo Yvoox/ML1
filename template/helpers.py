@@ -14,7 +14,7 @@ def load_csv_data(data_path, sub_sample=False):
     # convert class labels from strings to binary (-1,1)
     yb = np.ones(len(y))
     yb[np.where(y=='b')] = -1
-    
+
     # sub-sample
     if sub_sample:
         yb = yb[::50]
@@ -24,13 +24,27 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 
+def standardize(x):
+    centered_data = x - np.mean(x, axis=0)
+    std_data = centered_data / np.std(centered_data, axis=0)
+
+    return std_data
+
+
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
     y_pred[np.where(y_pred <= 0)] = -1
     y_pred[np.where(y_pred > 0)] = 1
-    
+
     return y_pred
+
+def comparePredict(list1,list2):
+    cptDiff = 0
+    for i in range(len(list1)):
+        if list1[i] != list2[i] :
+            cptDiff = cptDiff+1
+    return (cptDiff/len(list1))*100
 
 
 def create_csv_submission(ids, y_pred, name):
