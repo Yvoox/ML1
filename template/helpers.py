@@ -46,6 +46,9 @@ def comparePredict(list1,list2):
             cptDiff = cptDiff+1
     return (cptDiff/len(list1))*100
 
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
 
 def create_csv_submission(ids, y_pred, name):
     """
