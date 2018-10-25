@@ -23,6 +23,25 @@ def load_csv_data(data_path, sub_sample=False):
 
     return yb, input_data, ids
 
+def load_csv_data_logistic(data_path, sub_sample=False):
+    """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
+    y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
+    x = np.genfromtxt(data_path, delimiter=",", skip_header=1)
+    ids = x[:, 0].astype(np.int)
+    input_data = x[:, 2:]
+
+    # convert class labels from strings to binary (0,1)
+    yb = np.ones(len(y))
+    yb[np.where(y=='b')] =0
+
+    # sub-sample
+    if sub_sample:
+        yb = yb[::50]
+        input_data = input_data[::50]
+        ids = ids[::50]
+
+    return yb, input_data, ids
+
 
 def standardize(x):
     centered_data = x - np.mean(x, axis=0)
@@ -33,9 +52,17 @@ def standardize(x):
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
-    y_pred = np.dot(data, weights)
+    y_pred = data.dot(weights)
     y_pred[np.where(y_pred <= 0)] = -1
     y_pred[np.where(y_pred > 0)] = 1
+
+    return y_pred
+
+def predict_labels_logistic(weights, data):
+    """Generates class predictions given weights, and a test data matrix"""
+    y_pred = (1 / (1 + np.exp(np.dot(data, weights))))
+    y_pred[np.where(y_pred < limit)] = 0
+    y_pred[np.where(y_pred >= limit)] = 1
 
     return y_pred
 
@@ -47,7 +74,7 @@ def comparePredict(list1,list2):
     return (cptDiff/len(list1))*100
 
 
-def create_csv_submission(ids, y_pred, name):
+def create_csv_submission(ids, y_pred, yb, name):
     """
     Creates an output file in csv format for submission to kaggle
     Arguments: ids (event ids associated with each prediction)
@@ -55,8 +82,8 @@ def create_csv_submission(ids, y_pred, name):
                name (string name of .csv output file to be created)
     """
     with open(name, 'w') as csvfile:
-        fieldnames = ['Id', 'Prediction']
+        fieldnames = ['Id', 'Prediction', 'yb']
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
         writer.writeheader()
-        for r1, r2 in zip(ids, y_pred):
-            writer.writerow({'Id':int(r1),'Prediction':int(r2)})
+        for r1, r2, r3 in zip(ids, y_pred, yb):
+            writer.writerow({'Id':int(r1),'Prediction':int(r2), 'yb':(r3)})
