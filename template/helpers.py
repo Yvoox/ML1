@@ -61,8 +61,8 @@ def predict_labels(weights, data):
 def predict_labels_logistic(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = (1 / (1 + np.exp(np.dot(data, weights))))
-    y_pred[np.where(y_pred < limit)] = 0
-    y_pred[np.where(y_pred >= limit)] = 1
+    y_pred[np.where(y_pred < .5)] = 0
+    y_pred[np.where(y_pred >= .5)] = 1
 
     return y_pred
 
