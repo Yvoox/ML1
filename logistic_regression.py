@@ -9,13 +9,13 @@ def sigmoid(t):
 
 def calculate_loss(y, tx, w):
     """compute the cost by negative log likelihood."""
-    pred = sigmoid(tx.dot(w))
-    loss = (-y.dot(np.log(pred)) - (1 - y).dot(np.log(1 - pred))).mean()
+    pred = sigmoid(np.matmul(tx,w))
+    loss = ((-y) * np.log(pred) - (1 - y) * (np.log(1 - pred))).mean()
     return loss
 
 def calculate_gradient(y, tx, w):
     """compute the gradient of loss."""
-    pred = sigmoid(tx.dot(w))
+    pred = sigmoid(np.matmul(tx,w))
     grad = tx.T.dot(pred - y)
     return grad
 
@@ -38,8 +38,8 @@ def logistic_regression_GD(y, tx, w, gamma, max_iter, threshold):
         # get loss and update w.
         loss, w = learning_by_gradient_descent(y, tx, w, gamma)
         # log info
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+        #if iter % 100 == 0:
+        print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
             # converge criterion
         losses.append(loss)
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:

@@ -35,7 +35,7 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     w -= gamma * gradient
     return loss, w
 
-def regularized_logistic_regression_GD(y, tx, w, gamma, max_iter, threshold, lambda_):
+def reg_logistic_regression_GD(y, tx, w, gamma, max_iter, threshold, lambda_):
 
     losses = []
 

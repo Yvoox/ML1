@@ -60,7 +60,7 @@ def predict_labels(weights, data):
 
 def predict_labels_logistic(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
-    y_pred = (1 / (1 + np.exp(np.dot(data, weights))))
+    y_pred = (1 / (1 + np.exp(- np.dot(data, weights))))
     y_pred[np.where(y_pred < .5)] = 0
     y_pred[np.where(y_pred >= .5)] = 1
 
@@ -72,6 +72,13 @@ def comparePredict(list1,list2):
         if list1[i] != list2[i] :
             cptDiff = cptDiff+1
     return (cptDiff/len(list1))*100
+
+def comparePredict_correct(list1,list2):
+    cpt = 0
+    for i in range(len(list1)):
+        if list1[i] == list2[i] :
+            cpt = cpt+1
+    return (cpt/len(list1))*100
 
 
 def create_csv_submission(ids, y_pred, yb, name):
