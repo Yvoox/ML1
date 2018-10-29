@@ -30,6 +30,10 @@ def standardize(x):
 
     return std_data
 
+def loss_function(y, tx, w):
+    e = y - tx.dot(w)
+    return 1/2*np.mean(e**2)
+
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
@@ -46,6 +50,9 @@ def comparePredict(list1,list2):
             cptDiff = cptDiff+1
     return (cptDiff/len(list1))*100
 
+def column(matrix, i):
+    return [row[i] for row in matrix]
+
 
 def create_csv_submission(ids, y_pred, name):
     """
@@ -60,3 +67,9 @@ def create_csv_submission(ids, y_pred, name):
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id':int(r1),'Prediction':int(r2)})
+
+def splitDataHD(tx,yb,train_size):
+    return tx[:train_size],tx[train_size:],yb[:train_size],yb[train_size:]
+
+def splitDataKFold(tx,yb,k):
+    return np.split(tx,k),np.split(yb,k)
