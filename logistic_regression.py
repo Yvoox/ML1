@@ -4,44 +4,31 @@ import sys
 from template.helpers import *
 
 def sigmoid(t):
-    """apply sigmoid function on t."""
     return 1.0 / (1 + np.exp(-t))
 
 def calculate_loss(y, tx, w):
-    """compute the cost by negative log likelihood."""
     pred = sigmoid(np.matmul(tx,w))
-    loss = ((-y) * np.log(pred) - (1 - y) * (np.log(1 - pred))).mean()
-    return loss
+    loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
+    return np.squeeze(- loss)
 
 def calculate_gradient(y, tx, w):
-    """compute the gradient of loss."""
     pred = sigmoid(np.matmul(tx,w))
-    grad = tx.T.dot(pred - y)
+    grad = tx.T.dot(pred - y) / len(pred - y)
     return grad
 
 def learning_by_gradient_descent(y, tx, w, gamma):
-    """
-    Do one step of gradient descen using logistic regression.
-    Return the loss and the updated w.
-    """
     loss = calculate_loss(y, tx, w)
     grad = calculate_gradient(y, tx, w)
-    w -= gamma * grad
+    w = w - gamma * grad
     return loss, w
 
-def logistic_regression_GD(y, tx, w, gamma, max_iter, threshold):
-
-    losses = []
-
+def logistic_regression_GD(y, tx, w, gamma, max_iter):
     # start the logistic regression
     for iter in range(max_iter):
         # get loss and update w.
         loss, w = learning_by_gradient_descent(y, tx, w, gamma)
-        # log info
-        #if iter % 100 == 0:
-        print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-            # converge criterion
-        losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
-    return w
+    return w, loss
+
+# => 79.1652 % with polynomial degree 2
+#gamma = 0.01
+#max_iters = 7000

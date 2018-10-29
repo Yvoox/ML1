@@ -49,10 +49,16 @@ def standardize(x):
 
     return std_data
 
+def build_poly(x, degree):
+    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    poly = np.ones((len(x), 1))
+    for deg in range(1, degree+1):
+        poly = np.c_[poly, np.power(x, deg)]
+    return poly
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
-    y_pred = data.dot(weights)
+    y_pred = np.matmul(data, weights)
     y_pred[np.where(y_pred <= 0)] = -1
     y_pred[np.where(y_pred > 0)] = 1
 
@@ -81,7 +87,7 @@ def comparePredict_correct(list1,list2):
     return (cpt/len(list1))*100
 
 
-def create_csv_submission(ids, y_pred, yb, name):
+def create_csv_submission(ids, y_pred, name):
     """
     Creates an output file in csv format for submission to kaggle
     Arguments: ids (event ids associated with each prediction)
@@ -89,8 +95,8 @@ def create_csv_submission(ids, y_pred, yb, name):
                name (string name of .csv output file to be created)
     """
     with open(name, 'w') as csvfile:
-        fieldnames = ['Id', 'Prediction', 'yb']
+        fieldnames = ['Id', 'Prediction']
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
         writer.writeheader()
-        for r1, r2, r3 in zip(ids, y_pred, yb):
-            writer.writerow({'Id':int(r1),'Prediction':int(r2), 'yb':(r3)})
+        for r1, r2 in zip(ids, y_pred):
+            writer.writerow({'Id':int(r1),'Prediction':r2})
