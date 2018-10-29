@@ -122,22 +122,22 @@ def repro(p,m):
 
 
 #LEAST SQUARES SGD TEST
-wSGD,lossSGD = least_squares_SGD(yb,tx,random_w,max_iters,gamma)
+#wSGD,lossSGD = least_squares_SGD(yb,tx,random_w,max_iters,gamma)
 #s = 'SGD : w : ' + repr(wSGD) + ' - Loss: ' + repr(lossSGD)
 #print(s)
-y_pred = predict_labels(wSGD,tx)
-percent = comparePredict(yb,y_pred)
-print('Percent with standard tx : '+repr(percent))
+#y_pred = predict_labels(wSGD,tx)
+#percent = comparePredict(yb,y_pred)
+#print('Percent with standard tx : '+repr(percent))
 #y_pred_test = predict_labels(wSGD,tx_test)
 #create_csv_submission(ids_test,y_pred_test,'least_squares_sgd.csv')
 
 
 
 #LEAST SQUARES TEST
-#wLS = least_squares(yb,tx)
+#wLS,loss = least_squares(yb,tx)
 #y_pred = predict_labels(wLS,tx)
 #percent = comparePredict(yb,y_pred)
-#print('Percent with standard tx : '+repr(percent))
+#print('Percent with standard tx : '+repr(percent)+'with loss : '+repr(loss))
 
 #y_pred_test = predict_labels(wLS,tx_test)
 
@@ -145,11 +145,11 @@ print('Percent with standard tx : '+repr(percent))
 
 
 #RIDGE REGRESSION TEST
-#wRD = ridge_regression(yb,tx,1)
-#y_pred = predict_labels(wRD,tx)
-#percent = comparePredict(yb,y_pred)
+wRD,loss = ridge_regression(yb,tx,1)
+y_pred = predict_labels(wRD,tx)
+percent = comparePredict(yb,y_pred)
 
-#print(repr(percent))
+print('Percent with standard tx : '+repr(percent)+'with loss : '+repr(loss))
 #y_pred_test = predict_labels(wRD,tx_test)
 #create_csv_submission(ids_test,y_pred_test,'ridge_regression_opti.csv')
 
@@ -163,7 +163,7 @@ print('Percent with standard tx : '+repr(percent))
 #6- Reg Logistic Regression
 
 
-crossValidation(tx,yb,3,len(input_data[0])+1)
+#crossValidation(tx,yb,3,len(input_data[0])+1)
 
 
 print('CSV created... Operation done')

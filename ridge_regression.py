@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from template.helpers import *
+
 
 def ridge_regression(y, tx, lambda_):
     #split_y = y[:100]
@@ -18,5 +20,8 @@ def ridge_regression(y, tx, lambda_):
     c = split_tx.T.dot(split_y)
     #print('C : {c}'.format(c=c))
 
+    w = np.linalg.solve((a+b), c)
+    loss = loss_function(y,tx,w)
 
-    return np.linalg.solve((a+b), c)
+
+    return w,loss

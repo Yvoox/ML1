@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from template.helpers import *
+
 
 
 #Least Squares Stochastic Gradient Descent
@@ -11,9 +13,6 @@ import matplotlib.pyplot as plt
 
 
 
-def loss_function(y, tx, w):
-    e = y - tx.dot(w)
-    return 1/2*np.mean(e**2)
 
 def batch_training_set(y,tx,batch_size):
     batch_y = []

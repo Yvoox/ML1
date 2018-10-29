@@ -30,6 +30,10 @@ def standardize(x):
 
     return std_data
 
+def loss_function(y, tx, w):
+    e = y - tx.dot(w)
+    return 1/2*np.mean(e**2)
+
 
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
