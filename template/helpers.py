@@ -72,6 +72,14 @@ def predict_labels_logistic(weights, data):
 
     return y_pred
 
+def predict_labels_logistic_test(weights, data):
+    """Generates class predictions given weights, and a test data matrix"""
+    y_pred = (1 / (1 + np.exp(- np.dot(data, weights))))
+    y_pred[np.where(y_pred < .5)] = -1
+    y_pred[np.where(y_pred >= .5)] = 1
+
+    return y_pred
+
 def comparePredict(list1,list2):
     cptDiff = 0
     for i in range(len(list1)):
@@ -99,4 +107,4 @@ def create_csv_submission(ids, y_pred, name):
         writer = csv.DictWriter(csvfile, delimiter=",", fieldnames=fieldnames)
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
-            writer.writerow({'Id':int(r1),'Prediction':r2})
+            writer.writerow({'Id':int(r1),'Prediction':int(r2)})
