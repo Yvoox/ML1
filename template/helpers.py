@@ -4,6 +4,8 @@ import csv
 import numpy as np
 
 
+
+
 def load_csv_data(data_path, sub_sample=False):
     """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
     y = np.genfromtxt(data_path, delimiter=",", skip_header=1, dtype=str, usecols=1)
@@ -116,6 +118,8 @@ def create_csv_submission(ids, y_pred, name):
         writer.writeheader()
         for r1, r2 in zip(ids, y_pred):
             writer.writerow({'Id':int(r1),'Prediction':int(r2)})
+    print('CSV created... Operation done')
+
 
 def splitDataHD(tx,yb,train_size):
     return tx[:train_size],tx[train_size:],yb[:train_size],yb[train_size:]

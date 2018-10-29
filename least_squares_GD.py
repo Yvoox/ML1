@@ -23,7 +23,7 @@ def learning_by_gradient_descent(y, tx, w, gamma):
     w = w - gamma*grad
     return w
 
-def regression_GD(y, tx, w, gamma, max_iter, threshold):
+def regression_GD(y, tx, w, gamma, max_iter):
     for iter in range(max_iter):
         # get loss and update w.
         w = learning_by_gradient_descent(y, tx, w, gamma)

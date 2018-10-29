@@ -4,8 +4,6 @@ from template.helpers import *
 
 
 def least_squares(y, tx):
-
-
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
     w = np.linalg.solve(a, b)
