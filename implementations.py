@@ -65,7 +65,7 @@ print('Data loaded & prepared...')
 
 def randomIndividuLeastSquares(nbTrain,yb,tx):
     index = np.random.choice(yb.shape[0], nbTrain, replace=False) #create nbTrain random idex
-    wLS = least_squares(yb[index],tx[index]) #LS with nbTrain sample
+    wLS,loss = least_squares(yb[index],tx[index]) #LS with nbTrain sample
     y_pred = predict_labels(wLS,tx) #predict to prepare a comparative value
     percent = comparePredict(yb,y_pred) #comparative function
     return [wLS,percent]
@@ -95,7 +95,7 @@ def repro(p,m):
 
 #population generation
 #pop = []
-#for i in range(500): #number of individus
+#for i in range(50): #number of individus
 #    pop.append(randomIndividuLeastSquares(100,yb,tx)) #number of data in subdataTraining
 
 #sortedPop = sorted(pop,key=lambda x: x[1])
@@ -127,7 +127,7 @@ def repro(p,m):
 #print(s)
 #y_pred = predict_labels(wSGD,tx)
 #percent = comparePredict(yb,y_pred)
-#print('Percent with standard tx : '+repr(percent))
+#print('Percent with standard tx : '+repr(percent)+'with loss: '+repr(lossSGD))
 #y_pred_test = predict_labels(wSGD,tx_test)
 #create_csv_submission(ids_test,y_pred_test,'least_squares_sgd.csv')
 
@@ -145,11 +145,11 @@ def repro(p,m):
 
 
 #RIDGE REGRESSION TEST
-wRD,loss = ridge_regression(yb,tx,1)
-y_pred = predict_labels(wRD,tx)
-percent = comparePredict(yb,y_pred)
+#wRD,loss = ridge_regression(yb,tx,1)
+#y_pred = predict_labels(wRD,tx)
+#percent = comparePredict(yb,y_pred)
 
-print('Percent with standard tx : '+repr(percent)+'with loss : '+repr(loss))
+#print('Percent with standard tx : '+repr(percent)+'with loss : '+repr(loss))
 #y_pred_test = predict_labels(wRD,tx_test)
 #create_csv_submission(ids_test,y_pred_test,'ridge_regression_opti.csv')
 
